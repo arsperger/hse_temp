@@ -42,10 +42,6 @@ int main(int argc, char *argv[]) {
         perror("Error opening shared mem");
         exit(EXIT_FAILURE);
     }
-    if (ftruncate(shm_fd, SHM_SIZE) < 0) {
-        perror("Error ftruncate");
-        exit(EXIT_FAILURE);
-    }
 
     SharedMemorySegment *shared_mem = mmap(NULL, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (shared_mem == MAP_FAILED) {
