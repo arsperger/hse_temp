@@ -1,6 +1,6 @@
 pack1/Task1.txt
 pack2/Task2.txt
-pack2/IPC/dir_out
-pack2/IPC/dir_in
+pack2/IPC/dir_out/file*
+pack2/IPC/dir_in/file*
 pack2/IPC/producer
 pack2/IPC/consumer
