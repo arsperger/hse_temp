@@ -54,12 +54,12 @@ int main(int argc, char *argv[]) {
     }
 
     while (1) {
-        printf("wait sem consumer\n");
+        printf("wait for producer...\n");
         sem_wait(sem_consumer);
-        printf("wait sem consumer go ahead\n");
+        printf("producer passed the file, go ahead\n");
 
         if (shared_mem->size == 0) {
-            printf("shmem is zero, exit");
+            printf("shmem is zero, exit\n");
             break;
         }
 
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
         snprintf(output_path, sizeof(output_path), "%s/%s", output_dir, shared_mem->filename);
         printf("current tranferring file is %s\n", output_path);
 
-        FILE *file = fopen(output_path, "wb");
+        FILE *file = fopen(output_path, "a");
         if (file == NULL) {
             perror("Failed to create output file");
             sem_post(sem_producer);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
         sem_post(sem_producer);
     }
 
-    printf("Exit and clean res\n");
+    printf("Exit and clean resources\n");
 
     munmap(shared_mem, SHM_SIZE);
     sem_close(sem_producer);

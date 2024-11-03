@@ -68,24 +68,31 @@ int main(int argc, char *argv[]) {
                 continue;
             }
 
-            printf("reading file %s\n", filepath);
+            sem_wait(sem_producer);
 
-            size_t read_size = fread(shared_mem->buffer, 1, BUFFER_SIZE, file);
-            if (read_size < 0) {
-                perror("error read file");
+            fseek(file, 0, SEEK_END);
+            long fsize = ftell(file);
+            fseek(file, 0, SEEK_SET);
+
+            printf("reading file %s, size: %ld\n", filepath, fsize);
+
+            size_t read_size;
+
+            while ( read_size = fread(shared_mem->buffer, 1, BUFFER_SIZE, file) > 0 ) {
+                strncpy(shared_mem->filename, entry->d_name, sizeof(shared_mem->filename));
+                shared_mem->size = read_size;
+                printf("open consumer, send file %s, batch size: %d\n", filepath, BUFFER_SIZE);
+                sem_post(sem_consumer);
             }
+            printf("go take next file\n");
+
             fclose(file);
 
-            //printf("wait prod\n");
-            sem_wait(sem_producer);
-            strncpy(shared_mem->filename, entry->d_name, sizeof(shared_mem->filename));
-            shared_mem->size = read_size;
-            printf("post cons\n");
-            sem_post(sem_consumer);
         }
 
     }
 
+    sem_wait(sem_producer);
     shared_mem->size = 0;
     sem_post(sem_consumer);
 
@@ -93,11 +100,8 @@ int main(int argc, char *argv[]) {
 
     closedir(dir);
     munmap(shared_mem, SHM_SIZE);
-    //shm_unlink(SHARED_MEMORY_NAME);
     sem_close(sem_producer);
     sem_close(sem_consumer);
-    //sem_unlink(SEM_PRODUCER);
-    //sem_unlink(SEM_CONSUMER);
 
     return 0;
 }
