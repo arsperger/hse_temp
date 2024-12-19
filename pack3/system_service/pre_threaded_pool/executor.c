@@ -38,9 +38,6 @@ void execute_command(int client_socket, char *command, char **args) {
             return;
         }
 
-        //struct epoll_event ev, events[2];
-        //ev.events = EPOLLIN;
-
         struct epoll_event events[2];
         u_int32_t event = EPOLLIN;
 
@@ -59,26 +56,6 @@ void execute_command(int client_socket, char *command, char **args) {
             close(epoll_fd);
             return;
         }
-
-        /*
-        ev.data.fd = pipe_stdout[0];
-        if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pipe_stdout[0], &ev) == -1) {
-            perror("epoll_ctl: add stdout failed");
-            close(pipe_stdout[0]);
-            close(pipe_stderr[0]);
-            close(epoll_fd);
-            return;
-        }
-
-        ev.data.fd = pipe_stderr[0];
-        if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, pipe_stderr[0], &ev) == -1) {
-            perror("epoll_ctl: add stderr failed");
-            close(pipe_stdout[0]);
-            close(pipe_stderr[0]);
-            close(epoll_fd);
-            return;
-        }
-        */
 
         char buffer[BUFFER_SIZE];
         int status;
