@@ -1,0 +1,20 @@
+FROM ubuntu:latest
+WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    g++ \
+    libcpprest-dev \
+    libboost-all-dev \
+    libssl-dev \
+    cmake \
+    make
+
+COPY src/server/server.cpp .
+COPY src/server/entrypoint_server.sh /entrypoint_server.sh
+
+# Compile
+RUN g++ --std=c++17 -o server server.cpp -lboost_system -pthread
+
+EXPOSE 8080
+
+# Run the compiled code
+ENTRYPOINT [ "/entrypoint_server.sh" ]

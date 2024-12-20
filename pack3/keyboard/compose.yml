@@ -1,0 +1,11 @@
+services:
+
+  server:
+    image: hse_cpp_kb_server:latest
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "8080:8080"

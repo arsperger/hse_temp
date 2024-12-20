@@ -4,7 +4,8 @@
     "unistd.h": "c",
     "mman.h": "c",
     "if.h": "c",
-    "socket.h": "c"
+    "socket.h": "c",
+    "thread": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
