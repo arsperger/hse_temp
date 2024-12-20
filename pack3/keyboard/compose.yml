@@ -9,3 +9,17 @@ services:
       dockerfile: Dockerfile.server
     ports:
       - "8080:8080"
+
+  client:
+    image: hse_cpp_kb_client:latest
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    depends_on:
+      server:
+        condition: service_started
+    volumes:
+      - /dev/input:/dev/input:ro
+    privileged: true

@@ -138,10 +138,10 @@ int main(int argc, char* argv[]) {
     try {
         boost::asio::io_context io_context;
         Server server(io_context, port);
-        std::cout << "Server started on port " << port << "\n";
+        // std::cout << "Server started on port " << port << "\n";
         io_context.run();
     } catch (const std::exception& e) {
-        std::cerr << "Server error: " << e.what() << "\n";
+        // TODO: error handling, log to file
         return EXIT_FAILURE;
     }
 
