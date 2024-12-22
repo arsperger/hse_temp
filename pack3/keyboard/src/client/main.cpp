@@ -40,31 +40,27 @@ void daemonize() {
 
 
 int main(int argc, char **argv) {
-
 	if (argc != 3) {
-    	std::cerr << "Usage: " << argv[0] << " <host> <port>\n";
+    	cerr << "Usage: " << argv[0] << " <host> <port>\n";
     	return EXIT_FAILURE;
     }
 
-	std::string host = argv[1];
+	string host = argv[1];
 	if (host.empty()) {
-		std::cerr << "Invalid host\n";
+		cerr << "Invalid host\n";
 		return EXIT_FAILURE;
 	}
-	std::string port = argv[2];
+	string port = argv[2];
 	if (port.empty()) {
-		std::cerr << "Invalid port\n";
+		cerr << "Invalid port\n";
 		return EXIT_FAILURE;
 	}
 
 	daemonize();
 
-	string devices = "";
-	string handler = "";
+    Logger logger(host, port);
 
-	devices = logger::getDevices();
-	handler = logger::getHandler(devices);
-	logger::connectHandler(handler, host, port);
+    logger.loggerize();
 
 	return 0;
 }
