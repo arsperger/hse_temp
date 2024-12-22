@@ -1,0 +1,16 @@
+FROM ubuntu:latest
+WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    g++ \
+    libcpprest-dev \
+    libboost-all-dev \
+    libssl-dev \
+    cmake \
+    make
+
+COPY src/client/ .
+COPY src/client/entrypoint_client.sh /entrypoint_client.sh
+
+RUN make all
+
+ENTRYPOINT [ "/entrypoint_client.sh" ]
