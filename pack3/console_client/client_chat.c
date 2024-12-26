@@ -49,7 +49,8 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    int port = atoi(argv[1]);
+    char* endptr;
+    u_int16_t port = strtoul(argv[1], &endptr, 0);
     if (port <= 0 || port > 65535) {
         fprintf(stderr, "Invalid port number\n");
         exit(EXIT_FAILURE);
