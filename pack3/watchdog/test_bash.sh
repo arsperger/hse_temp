@@ -5,7 +5,7 @@ term_handler() {
 	exit 143; # SIGTERM
 }
 
-trap 'kill ${!}; term_handler' SIGTERM
+trap 'term_handler' SIGTERM
 
 CHARDEV=/dev/watchdog_timer
 
@@ -14,7 +14,7 @@ exec 5>$CHARDEV
 #run it until SIGTERM
 while true
 do
-  tail -f /dev/null & wait ${!}
+	wait ${!}
 done
 
 #EOF
